@@ -1,0 +1,4 @@
+#!/bin/bash
+echo "stopping ${PROJECT_NAME}-redis Docker container"
+
+docker stop ${PROJECT_NAME}-redis

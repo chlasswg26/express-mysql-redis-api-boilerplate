@@ -1,0 +1,4 @@
+#!/bin/bash
+echo "tearing down ${PROJECT_NAME}-mysql Docker container"
+
+docker stop ${PROJECT_NAME}-mysql; docker rm ${PROJECT_NAME}-mysql

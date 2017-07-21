@@ -1,0 +1,31 @@
+#!/bin/bash
+
+echo "== INFO & WARNINGS =================================================="
+echo "| Creates or restarts ${PROJECT_NAME}-mysql Docker container.                  |" 
+echo "====================================================================="
+echo ""
+
+if [ -z "$(docker ps -a -f 'name=${PROJECT_NAME}-mysql' --format='{{json .Status}}')" ]; then
+  echo "Creating ${PROJECT_NAME}-mysql Docker container"
+  docker run -d \
+    -e MYSQL_ROOT_PASSWORD='${MYSQL_ROOT_PASSWORD}' \
+    -e MYSQL_DATABASE='${MYSQL_DATABASE}' \
+    -e MYSQL_USER='${MYSQL_USER}' \
+    -e MYSQL_PASSWORD='${MYSQL_PASSWORD}' \
+    -p 3306:3306 \
+    --name '${PROJECT_NAME}-mysql' \
+    --health-cmd='mysqladmin -u root --password=${MYSQL_ROOT_PASSWORD} status' \
+    mysql:5.7 \
+    --character-set-server='utf8mb4' --collation-server='utf8mb4_unicode_ci' \
+
+  echo "Waiting for ${PROJECT_NAME}-mysql Docker container to be healthy"
+  until [[ "$(docker inspect --format='{{json .State.Health.Status}}' ${PROJECT_NAME}-mysql)" == *"healthy"* ]]; do
+    sleep 1
+  done
+else
+  echo "Restarting ${PROJECT_NAME}-mysql Docker container"
+  docker restart ${PROJECT_NAME}-mysql
+fi
+
+echo "Running migrations against ${PROJECT_NAME}-mysql Docker container"
+node node_modules/db-migrate/bin/db-migrate up

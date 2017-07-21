@@ -1,0 +1,40 @@
+{
+  "name": "express-mysql-redis-api-boilerplate",
+  "version": "1.0.0",
+  "description": "Boilerplate for an Express API backed by MySql database and Redis cache",
+  "main": "index.js",
+  "author": "Leigh Johnson <hi@leighjohnson.me>",
+  "license": "MIT",
+  "scripts": {
+    "start": ". example.env node index.js",
+    "lint": "eslint **/*.js --ignore-path node_modules",
+    "dev": ". example.env && NODE_ENV=dev nodemon --inspect index.js",
+    "test": ". example.env && NODE_ENV=test mocha 'test/**/*.js'",
+    "env-up": "./bin/mysql-up && ./bin/redis-up",
+    "env-down": "./bin/mysql-down && ./bin/mysql-down",
+    "env-clean": "./bin/mysql-clean && ./bin/redis-clean",
+  },
+  "devDependencies": {
+    "chai": "^4.1.0",
+    "eslint": "^4.2.0",
+    "mocha": "^3.4.2",
+    "nodemon": "^1.11.0",
+    "sinon": "^2.3.8",
+    "supertest": "^3.0.0"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.17.2",
+    "change-case": "^3.0.1",
+    "cookie-parser": "^1.4.3",
+    "db-migrate": "^0.10.0-beta.21",
+    "db-migrate-mysql": "^1.1.10",
+    "express": "^4.15.3",
+    "express-promise-router": "^2.0.0",
+    "lodash": "^4.17.4",
+    "moment": "^2.18.1",
+    "mysql": "^2.13.0",
+    "redis": "^2.7.1",
+    "uuid": "^3.1.0"
+  }
+}

@@ -1,0 +1,4 @@
+#!/bin/bash
+echo "tearing down ${PROJECT_NAME}-redis Docker container"
+
+docker stop ${PROJECT_NAME}-redis; docker rm ${PROJECT_NAME}-redis

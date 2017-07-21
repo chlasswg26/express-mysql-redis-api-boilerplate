@@ -1,0 +1,21 @@
+#!/bin/bash
+
+echo "== INFO & WARNINGS =================================================="
+echo "| Creates or restarts ${PROJECT_NAME}-redis Docker container.                  |" 
+echo "====================================================================="
+echo ""
+
+echo "Starting ${PROJECT_NAME}-redis Docker container"
+
+if [ -z "$(docker ps -a -f 'name=${PROJECT_NAME}-redis' --format='{{json .Status}}')" ]; then
+  echo "Creating ${PROJECT_NAME}-redis Docker container"
+  docker run -d \
+    -v $(pwd)/bin/redis.conf:/usr/local/etc/redis/redis.conf \
+    -p 6379:6379 \
+    --name '${PROJECT_NAME}-redis' \
+    --health-cmd='redis-cli -h 127.0.0.1 -p 6379 ping' \
+    redis:alpine
+else
+  echo "Restarting ${PROJECT_NAME}-redis Docker container"
+  docker restart ${PROJECT_NAME}-redis
+fi
